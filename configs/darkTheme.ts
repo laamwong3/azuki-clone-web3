@@ -18,7 +18,7 @@ let darkTheme = createTheme({
     error: {
       main: red.A400,
     },
-    background: { default: "#39445a" },
+    background: { default: "#414149" },
   },
 });
 
