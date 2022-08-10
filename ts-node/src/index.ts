@@ -22,7 +22,7 @@ interface Attribute {
 
 const contractAddress = "0xED5AF388653567Af2F388E6224dC7C4b3241C544"; //Azuki
 
-const frontendPath = "../../constants/azuki/images";
+const frontendPath = "../../constants/azuki";
 const backendDataPath = "./data";
 const backendImagePath = "./images";
 
@@ -56,6 +56,10 @@ const retrieveTokenUri = async () => {
   });
   fs.writeFileSync(
     `${backendDataPath}/tokenUri.json`,
+    JSON.stringify(tempObj, null, 2)
+  );
+  fs.writeFileSync(
+    `${frontendPath}/tokenUri.json`,
     JSON.stringify(tempObj, null, 2)
   );
 };
