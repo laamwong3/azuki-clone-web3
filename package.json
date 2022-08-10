@@ -9,11 +9,15 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.10.0",
+    "@emotion/styled": "^11.10.0",
+    "@mui/material": "^5.10.0",
     "next": "12.2.4",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
   "devDependencies": {
+    "@thirdweb-dev/react": "^2.6.2",
     "@types/node": "18.6.5",
     "@types/react": "18.0.17",
     "@types/react-dom": "18.0.6",
