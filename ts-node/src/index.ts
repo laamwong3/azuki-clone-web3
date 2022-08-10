@@ -8,6 +8,18 @@ dotenv.config({ path: "../.env" });
 //fetch azuki metadata
 //download 100 images for project
 
+interface Metadata {
+  name: string;
+  image: string;
+  description: string;
+  attributes: Attribute[];
+}
+
+interface Attribute {
+  trait_type: string;
+  value: string;
+}
+
 const contractAddress = "0xED5AF388653567Af2F388E6224dC7C4b3241C544"; //Azuki
 
 const frontendPath = "../../constants/azuki/images";
@@ -15,7 +27,7 @@ const backendDataPath = "./data";
 const backendImagePath = "./images";
 
 const fetchMetadata = async () => {
-  const url = `https://deep-index.moralis.io/api/v2/nft/${contractAddress}?chain=eth&format=decimal&limit=10`;
+  const url = `https://deep-index.moralis.io/api/v2/nft/${contractAddress}?chain=eth&format=decimal&limit=50`;
   nodeFetch(url, {
     method: "GET",
     headers: {
@@ -50,42 +62,57 @@ const retrieveTokenUri = async () => {
 
 const downloadImages = async () => {
   const tokenUri = await import("./data/tokenUri.json");
+  let metadata: Metadata[] = [];
 
-  tokenUri.data.map((data, index) => {
-    client.get(data.image, (res) => {
-      res.pipe(fs.createWriteStream(`${backendImagePath}/${index}.png`));
-    });
+  await Promise.all(
+    tokenUri.data.map((data, index) => {
+      client.get(data.image, (res) => {
+        res.pipe(
+          fs.createWriteStream(`${frontendPath}/azuki-${index + 1}.png`)
+        );
+      });
+      metadata.push({
+        name: `Azuki #${index + 1}`,
+        description: "Created by Azuki team",
+        image: `azuki-${index + 1}.png`,
+        attributes: data.attributes,
+      });
+    })
+  ).then(() => {
+    fs.writeFileSync(
+      `${frontendPath}/metadata.json`,
+      JSON.stringify(metadata, null, 2)
+    );
   });
-
-  //   client.get(tokenUri.data[0].image, (res) => {
-  //     res.pipe(fs.createWriteStream(`${backendImagePath}/test.png`));
-  //   });
 };
 
 const clean = async () => {
-  if (fs.existsSync(backendImagePath)) {
-    fs.rm(backendImagePath, { recursive: true, force: true }, (err) => {
-      if (err) {
-        console.log(err);
-      } else {
-        fs.mkdirSync(backendImagePath);
-      }
-    });
-  }
-  if (fs.existsSync(backendDataPath)) {
-    fs.rm(backendDataPath, { recursive: true, force: true }, (err) => {
-      if (err) {
-        console.log(err);
-      } else {
-        fs.mkdirSync(backendDataPath);
-      }
-    });
-  }
+  new Promise(() => {
+    if (fs.existsSync(backendImagePath)) {
+      fs.rm(backendImagePath, { recursive: true, force: true }, (err) => {
+        if (err) {
+          console.log(err);
+        } else {
+          fs.mkdirSync(backendImagePath);
+        }
+      });
+    }
+  });
+
+  // if (fs.existsSync(backendDataPath)) {
+  //   fs.rm(backendDataPath, { recursive: true, force: true }, (err) => {
+  //     if (err) {
+  //       console.log(err);
+  //     } else {
+  //       fs.mkdirSync(backendDataPath);
+  //     }
+  //   });
+  // }
 };
 
 (async () => {
-  //   await clean();
-  await fetchMetadata();
-  await retrieveTokenUri();
-  //   await downloadImages();
+  fetchMetadata().then(() => retrieveTokenUri().then(() => downloadImages()));
+
+  // retrieveTokenUri();
+  // await downloadImages();
 })().catch((e) => console.log(e));
