@@ -10,14 +10,30 @@ import Image from "next/image";
 import { contractAddress } from "../constants/azuki/contract";
 import { useNFTCollection, useNFTs } from "@thirdweb-dev/react";
 import { Stack } from "@mui/material";
+import { ethers } from "ethers";
+import { ThirdwebSDK } from "@thirdweb-dev/sdk";
 
 const cardSize = 500;
 
 export default function MintingCard() {
-  // const nftCollection = useNFTCollection(contractAddress);
-  // const { data: nfts } = useNFTs(nftCollection);
+  const provider = new ethers.providers.JsonRpcProvider(
+    process.env.NEXT_PUBLIC_RPC_NODE
+  );
+  const wallet = new ethers.Wallet(
+    process.env.NEXT_PUBLIC_PRIVATE_KEY ?? "",
+    provider
+  );
 
-  // console.log(nfts);
+  const sdk = new ThirdwebSDK(wallet);
+
+  React.useEffect(() => {
+    (async () => {
+      const totalSupply = await sdk
+        .getNFTDrop(contractAddress)
+        .getAllUnclaimed();
+      console.log(totalSupply);
+    })();
+  }, []);
 
   return (
     <Card sx={{ width: cardSize }}>
