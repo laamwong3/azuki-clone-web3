@@ -32,12 +32,13 @@ export default function MintingCard() {
           Mint NFTs
         </Typography>
       </CardContent>
-
-      <Stack direction={"row"} justifyContent="center">
+      <CardActions
+        sx={{ display: "flex", flexDirection: "row", justifyContent: "center" }}
+      >
         <Button size="large" sx={{ paddingBotton: 30 }}>
           MINT
         </Button>
-      </Stack>
+      </CardActions>
     </Card>
   );
 }

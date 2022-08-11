@@ -35,10 +35,14 @@ const Content = () => {
             mouseTracking
           />
         </Box>
-        <Stack flex={1} direction={{ xs: "column", md: "row" }}>
+        <Stack
+          flex={1}
+          direction={{ xs: "column", md: "row" }}
+          paddingBottom={5}
+        >
           <Box
             sx={{
-              border: "2px solid black",
+              // border: "2px solid black",
               display: "flex",
               flexDirection: "column",
               justifyContent: "center",
@@ -63,11 +67,12 @@ const Content = () => {
           </Box>
           <Box
             sx={{
-              border: "2px solid black",
+              // border: "2px solid black",
               display: "flex",
               flexDirection: "row",
               justifyContent: "center",
               alignItems: "center",
+              // marginBottom: 5,
             }}
             flex={1}
           >
