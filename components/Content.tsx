@@ -2,6 +2,7 @@ import { Box, Stack, Typography } from "@mui/material";
 import Image from "next/image";
 import AliceCarousel from "react-alice-carousel";
 import imageUri from "../constants/azuki/tokenUri.json";
+import MintingCard from "./MintingCard";
 
 const Content = () => {
   const responsive = {
@@ -35,7 +36,16 @@ const Content = () => {
           />
         </Box>
         <Stack flex={1} direction={{ xs: "column", md: "row" }}>
-          <Box sx={{ border: "2px solid black" }} flex={1}>
+          <Box
+            sx={{
+              border: "2px solid black",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+            flex={1}
+          >
             <Typography variant="h3" fontWeight={"bold"} padding={2}>
               Welcome to Azuki
             </Typography>
@@ -51,7 +61,18 @@ const Content = () => {
               the rules are being rewritten.
             </Typography>
           </Box>
-          <Box sx={{ border: "2px solid black" }} flex={1}></Box>
+          <Box
+            sx={{
+              border: "2px solid black",
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+            flex={1}
+          >
+            <MintingCard />
+          </Box>
         </Stack>
       </Stack>
     </>
